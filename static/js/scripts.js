@@ -1,5 +1,3 @@
-//Note this is a massive refresh as we DELETE All Entries
-// We then get all the Recipes
 function getRecipes() {
   document.querySelector(".recipes").innerHTML = ``;
   fetch(`api/recipes`)
@@ -7,9 +5,12 @@ function getRecipes() {
     .then((recipes) => renderRecipes(recipes));
 }
 
+//Note this is a massive refresh as we DELETE All Entries
+// We then get all the Recipes
+
 //Here we create the HTML to show the data
 function renderRecipes(recipes) {
-  console.log(recipes);
+  // console.log(recipes);
   recipes.forEach((recipe) => {
     let recipeEl = document.createElement("div");
     recipeEl.innerHTML = `
@@ -47,7 +48,24 @@ function addRecipe(event) {
 // Note we would ideally want to just return the recipe we added and then just modify the code to add the recipe to our
 // HTML VS downloading all the Recipies!!!
 
+//Seems we are calling the submit somehow??? Commented out these 2 lines and somehow Toast was added without clicking the button.
 const addForm = document.querySelector("#addForm");
 addForm.addEventListener("submit", addRecipe);
+
+function deleteRecipe(event) {
+  fetch(`api/recipes/${event.target.dataset.id}`, {
+    method: "DELETE",
+  }).then(location.reload());
+}
+
+function handleClicks(event) {
+  if (event.target.matches("[data-id]")) {
+    deleteRecipe(event);
+  } //else if (event.target.matches("#seed")) {
+  //   seed();
+  // }
+}
+
+document.addEventListener("click", handleClicks);
 
 getRecipes();

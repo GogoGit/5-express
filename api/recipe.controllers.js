@@ -4,16 +4,21 @@ const Recipe = require("./recipe.model");
 exports.findAll = function (req, res) {
   Recipe.find({}).then((data) => res.send(data));
 };
+
 exports.findById = function () {};
 
 //sending data from the front end to the back end
 //Note we should send the data back to the form but here we are just sending OK STATUS!
 exports.add = function (req, res) {
-  Recipe.create(req.body).then((data) => res.send(data));
+  Recipe.create(req.body).then(data);
 };
 
 exports.update = function () {};
-exports.delete = function () {};
+
+exports.delete = function (req, res) {
+  let id = req.params.id;
+  Recipe.deleteOne({ _id: id }).then(res.sendStatus(202));
+};
 
 // Example to delete just one Item
 // exports.killall = function (req, res) {
@@ -27,6 +32,7 @@ exports.killall = function (req, res) {
 
 //Creates some default Data!
 //Note you need the (req,res) variables.. you can't just have(res)  becuase it thinks the res is the req variable!  (Positional Dependancy)
+//https://mongoosejs.com/docs/api/model.html#Model.create()
 exports.import = function (req, res) {
   Recipe.create([
     {
