@@ -16,7 +16,13 @@ exports.add = function (req, res) {
   Recipe.create(req.body).then(data);
 };
 
-exports.update = function () {};
+exports.update = function (req, res) {
+  console.log(req.body);
+  const id = req.params.id;
+  Recipe.findByIdAndUpdate(id, req.body, { new: true }).then((data) =>
+    res.send(data)
+  );
+};
 
 exports.delete = function (req, res) {
   let id = req.params.id;

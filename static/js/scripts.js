@@ -26,7 +26,7 @@ function renderRecipes(recipes) {
 
 function addRecipe(event) {
   event.preventDefault();
-
+  //Destructuring the data we want to use
   const { title, image, description } = event.target;
 
   const recipe = {
