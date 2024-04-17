@@ -5,7 +5,10 @@ exports.findAll = function (req, res) {
   Recipe.find({}).then((data) => res.send(data));
 };
 
-exports.findById = function () {};
+exports.findById = (req, res) => {
+  const id = req.params.id;
+  Recipe.findOne({ _id: id }).then((data) => res.send(data));
+};
 
 //sending data from the front end to the back end
 //Note we should send the data back to the form but here we are just sending OK STATUS!
