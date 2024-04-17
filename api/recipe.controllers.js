@@ -7,13 +7,16 @@ exports.findAll = function (req, res) {
 
 exports.findById = (req, res) => {
   const id = req.params.id;
-  Recipe.findOne({ _id: id }).then((data) => res.send(data));
+  Recipe.findByIdAndUpdate(id, req.body, { new: true }).then((data) =>
+    res.send(data)
+  );
 };
 
 //sending data from the front end to the back end
 //Note we should send the data back to the form but here we are just sending OK STATUS!
 exports.add = function (req, res) {
-  Recipe.create(req.body).then(data);
+  // Recipe.create(req.body).then(data);
+  Recipe.create(req.body).then((data) => res.send(data));
 };
 
 exports.update = function (req, res) {
@@ -69,6 +72,10 @@ exports.import = function (req, res) {
       image: "hamburger.png",
     },
   ]).then(res.sendStatus(202));
+};
+
+exports.killall = function (req, res) {
+  Recipe.deleteMany({}).then(res.sendStatus(202));
 };
 
 //Creating some data
