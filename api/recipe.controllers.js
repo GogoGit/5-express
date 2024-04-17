@@ -9,8 +9,7 @@ exports.findById = function () {};
 //sending data from the front end to the back end
 //Note we should send the data back to the form but here we are just sending OK STATUS!
 exports.add = function (req, res) {
-  Recipe.create(req.body);
-  // .then(res.sendStatus(202));
+  Recipe.create(req.body).then((data) => res.send(data));
 };
 
 exports.update = function () {};
@@ -27,8 +26,9 @@ exports.killall = function (req, res) {
 };
 
 //Creates some default Data!
-exports.import = function (res) {
-  Recipe.create(
+//Note you need the (req,res) variables.. you can't just have(res)  becuase it thinks the res is the req variable!  (Positional Dependancy)
+exports.import = function (req, res) {
+  Recipe.create([
     {
       title: "Lasagna",
       description:
@@ -52,11 +52,9 @@ exports.import = function (res) {
       description:
         "A Hamburger (often called a burger) is a type of sandwich in the form of  rounded bread sliced in half with its center filled with a patty which is usually ground beef, then topped with vegetables such as lettuce, tomatoes and onions.",
       image: "hamburger.png",
-    }
-  );
+    },
+  ]).then(res.sendStatus(202));
 };
-
-//.then(res.sendStatus(202));  //Problem with this line of code which is for the Importing of data!!!
 
 //Creating some data
 // app.get("/api/import", function (req, res) {
