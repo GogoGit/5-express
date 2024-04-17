@@ -11,6 +11,19 @@
     <!-- <h1>Hello from the front end!</h1> -->
     <div id="root">
       <h1>Recipes!</h1>
+      <!-- note we removed the action from the form since we are gonna do the Event.Prevent Default action trick (see scripts.js) -->
+      <form id="addForm">
+        <input
+          type="text"
+          name="title"
+          placeholder="Recipe Title"
+          value="Toast"
+        />
+        <input type="text" name="image" placeholder="Image" value="toast.png" />
+        <textarea name="description" value="description">Yummy!</textarea>
+        <button type="submit">Submit</button>
+      </form>
+
       <div class="recipes"></div>
     </div>
     <script src="/js/scripts.js"></script>

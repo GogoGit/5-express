@@ -5,6 +5,9 @@ const app = express();
 const dataBaseURL = process.env.DB_URL || "mongodb://localhost:27017";
 
 app.use(express.static("static"));
+//Let's the server know how to parse the data... ie:  urlencoded or json payloads.
+app.use(express.json({ extended: false }));
+app.use(express.urlencoded({ extended: false }));
 
 // Route - index.html file
 //note (req, res, next) format

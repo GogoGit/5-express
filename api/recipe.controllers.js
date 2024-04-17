@@ -5,7 +5,14 @@ exports.findAll = function (req, res) {
   Recipe.find({}).then((data) => res.send(data));
 };
 exports.findById = function () {};
-exports.add = function () {};
+
+//sending data from the front end to the back end
+//Note we should send the data back to the form but here we are just sending OK STATUS!
+exports.add = function (req, res) {
+  Recipe.create(req.body);
+  // .then(res.sendStatus(202));
+};
+
 exports.update = function () {};
 exports.delete = function () {};
 
@@ -49,7 +56,7 @@ exports.import = function (res) {
   );
 };
 
-//.then(res.sendStatus(202));
+//.then(res.sendStatus(202));  //Problem with this line of code which is for the Importing of data!!!
 
 //Creating some data
 // app.get("/api/import", function (req, res) {
