@@ -69,4 +69,44 @@ document.addEventListener("click", handleClicks);
 const addForm = document.querySelector("#addForm");
 addForm.addEventListener("submit", addRecipe);
 
+//Add Default Data Button
+function addDataApiCall(event) {
+  console.dir(event.target);
+  console.log("add more data!!!");
+  fetch(`api/import`)
+    .then((response) => {
+      console.log(response);
+    })
+    .then((data) => {
+      console.log(data);
+    });
+
+  //Refresh Page
+  console.log("Refresh Page");
+  getRecipes();
+}
+
+const btnAddData = document.getElementById("add-data-button");
+btnAddData.addEventListener("click", addDataApiCall);
+
+//Delete All Data Button
+function deleteDataApiCall(event) {
+  console.dir(event.target);
+  console.log("BURN IT TO THE GROUND!!!");
+  fetch(`api/KillAll`)
+    .then((response) => {
+      console.log(response);
+    })
+    .then((data) => {
+      console.log(data);
+    });
+
+  //Refresh Page
+  console.log("Refresh Page");
+  getRecipes();
+}
+
+const btnDeleteData = document.getElementById("delete-data-button");
+btnDeleteData.addEventListener("click", deleteDataApiCall);
+
 getRecipes();
