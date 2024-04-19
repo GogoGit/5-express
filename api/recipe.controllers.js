@@ -19,6 +19,27 @@ exports.add = function (req, res) {
   Recipe.create(req.body).then((data) => res.send(data));
 };
 
+exports.upload = function (req, res) {
+  //Since we cannot determine the file length, we are querying the Key's of the object
+  // to determine if anything exists.
+  console.log("1: ", req.files);
+  console.log("2: ", Object.keys(req.files));
+  if (Object.keys(req.files).length == 0) {
+    // not we are chaining 2 things here
+    // we are sending a Status and then we are saying 'No files were uploaded'
+    // you could add JSON data also....  Need more information/examples
+    return res.status(400).send("No files were uploaded.");
+  }
+  let file = req.files.file;
+  file.mv(`./static/img/${req.body.filename}`, (err) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    res.json({ file: `static/img/${req.body.filename}` });
+    console.log(res.json);
+  });
+};
+
 exports.update = function (req, res) {
   console.log(req.body);
   const id = req.params.id;
@@ -29,7 +50,12 @@ exports.update = function (req, res) {
 
 exports.delete = function (req, res) {
   let id = req.params.id;
-  Recipe.deleteOne({ _id: id }).then(res.sendStatus(202));
+  // Recipe.deleteOne({ _id: id }).then(res.sendStatus(202));
+  //Recipe.deleteOne({ _id: id }).then(res.send(`${id}`));
+  // Recipe.deleteOne({ _id: id }).then(res.send(`ID124314341234lkj   ${id}`));
+  Recipe.deleteOne({ _id: id }).then((id) =>
+    res.send(`ID124314341234lkj   ${id}`)
+  );
 };
 
 // Example to delete just one Item

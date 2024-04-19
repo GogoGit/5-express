@@ -49,10 +49,20 @@ function addRecipe(event) {
 // HTML VS downloading all the Recipies!!!
 
 function deleteRecipe(event) {
+  console.log("deleteRecipe .....");
   console.log("2: ", event.target);
   fetch(`api/recipes/${event.target.dataset.id}`, {
     method: "DELETE",
-  }).then(location.reload());
+  })
+    .then((response) => {
+      console.log("response");
+      console.log(response);
+    })
+    .then((data) => {
+      console.log("data");
+      console.log(data);
+    })
+    .then(location.reload());
 }
 
 function handleClicks(event) {

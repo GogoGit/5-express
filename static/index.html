@@ -16,6 +16,18 @@
         <button type="button" id="delete-data-button">Delete All Data</button>
       </div>
       <h1>Recipes!</h1>
+
+      <!-- Note the following on form
+        action - has an endpoint
+        method = Post
+        enctype = it has an encoding type
+      -->
+      <form action="/api/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/png" />
+        <input type="text" placeholder="File name" name="filename" />
+        <button type="submit">Upload</button>
+      </form>
+
       <!-- note we removed the action from the form since we are gonna do the Event.Prevent Default action trick (see scripts.js) -->
       <form id="addForm">
         <input
