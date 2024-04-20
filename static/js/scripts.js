@@ -125,10 +125,7 @@ function renderRecipes(recipes) {
   console.log(recipes);
   recipes.forEach((recipe) => {
     let convDate = myDateConversion(recipe.created).replace("T", " ");
-
     displayUpdateCreateDate;
-
-    // <p>${recipe.created}</p>
 
     let recipeEl = document.createElement("div");
     recipeEl.innerHTML = `
@@ -179,7 +176,8 @@ function renderRecipes(recipes) {
 function addRecipe(event) {
   event.preventDefault();
   //Destructuring the data we want to use
-  const { title, image, description, ingredients, createDate } = event.target;
+  const { title, image, description, ingredients, preparation, createDate } =
+    event.target;
 
   objIngredients = [];
   arrIngredients = ingredients.value.split(",");
@@ -187,11 +185,19 @@ function addRecipe(event) {
     objIngredients[index] = `${item}`;
   });
 
+  objPreparation = [];
+  arrSteps = preparation.value.split(",");
+  arrSteps.map((item, index) => {
+    var objStep = { step: `${item}` };
+    objPreparation[index] = objStep;
+  });
+
   const recipe = {
     title: title.value,
     image: image.value,
     description: description.value,
     ingredients: objIngredients,
+    preparation: objPreparation,
     created: createDate.value.toString(),
   };
 
