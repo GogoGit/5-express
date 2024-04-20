@@ -30,8 +30,8 @@ exports.update = function (req, res) {
 };
 
 exports.delete = function (req, res) {
-  console.log("LOOK HERE!!!!!!!!!!!!!!!!!!!");
-  console.log("req: ", req);
+  // console.log("LOOK HERE!!!!!!!!!!!!!!!!!!!");
+  // console.log("req: ", req);
   // console.log("res: ", res);
   let id = req.params.id;
   Recipe.deleteOne({ _id: id }).then(res.sendStatus(202));

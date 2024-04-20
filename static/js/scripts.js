@@ -157,51 +157,6 @@ function deleteRecipe(event) {
     .then(location.reload());
 }
 
-function handleClicks(event) {
-  if (event.target.matches("[data-id]")) {
-    deleteRecipe(event);
-  } //else if (event.target.matches("#seed")) {
-  //   seed();
-  // }
-
-  if (event.target.id.match("add-data-button")) {
-    console.dir(event.target);
-    console.log("add more data!!!");
-    fetch(`api/import`)
-      .then((response) => {
-        console.log(response);
-      })
-      .then((data) => {
-        console.log(data);
-      });
-
-    //Refresh Page
-    console.log("Refresh Page");
-    getRecipes();
-  }
-  if (event.target.id.match("delete-data-button")) {
-    console.dir(event.target);
-    console.log("BURN IT TO THE GROUND!!!");
-    fetch(`api/KillAll`)
-      .then((response) => {
-        console.log(response);
-      })
-      .then((data) => {
-        console.log(data);
-      });
-
-    //Refresh Page
-    console.log("Refresh Page");
-    getRecipes();
-  }
-}
-
-document.addEventListener("click", handleClicks);
-
-//Seems we are calling the submit somehow??? Commented out these 2 lines and somehow Toast was added without clicking the button.
-const addForm = document.querySelector("#addForm");
-addForm.addEventListener("submit", addRecipe);
-
 //Add Default Data Button
 function addDataApiCall(event) {
   console.dir(event.target);
@@ -218,9 +173,6 @@ function addDataApiCall(event) {
   console.log("Refresh Page");
   getRecipes();
 }
-
-// const btnAddData = document.getElementById("add-data-button");
-// btnAddData.addEventListener("click", addDataApiCall);
 
 //Delete All Data Button
 function deleteDataApiCall(event) {
@@ -239,7 +191,73 @@ function deleteDataApiCall(event) {
   getRecipes();
 }
 
-// const btnDeleteData = document.getElementById("delete-data-button");
-// btnDeleteData.addEventListener("click", deleteDataApiCall);
+function handleClicks(event) {
+  console.log(event.target);
+
+  //Looking for custom data attribues .... data-[attributeName]
+  if (event.target.matches("[data-id]")) {
+    deleteRecipe(event);
+  } //else if (event.target.matches("#seed")) {
+  //   seed();
+  // }
+
+  // if (event.target.id.match("bntUpload")) {
+  //   console.log("Look we uploade a file????");
+  //   console.log(event.target);
+  //   getRecipes();
+  // }
+
+  if (event.target.id.match("btnAddData")) {
+    console.dir(event.target);
+    console.log("add more data!!!");
+    fetch(`api/import`)
+      .then((response) => {
+        console.log(response);
+      })
+      .then((data) => {
+        console.log(data);
+      });
+
+    //Refresh Page
+    console.log("Refresh Page");
+    getRecipes();
+  }
+  if (event.target.id.match("btnDeleteData")) {
+    console.dir(event.target);
+    console.log("BURN IT TO THE GROUND!!!");
+    fetch(`api/KillAll`)
+      .then((response) => {
+        console.log(response);
+      })
+      .then((data) => {
+        console.log(data);
+      });
+
+    //Refresh Page
+    console.log("Refresh Page");
+    getRecipes();
+  }
+}
+
+// Event Click Handlers
+document.addEventListener("click", handleClicks);
+
+// Event Form Handlers
+const addForm = document.querySelector("#addForm");
+addForm.addEventListener("submit", addRecipe);
+
+function uploadImage(event) {
+  event.preventDefault();
+  const data = new FormData(); //This is how we get the data out of the form ... (How does this work????)
+  data.append("file", imageForm.file.files[0]);
+  data.append("filename", imageForm.filename.value);
+  fetch("/api/upload", {
+    method: "POST",
+    body: data,
+  });
+}
+
+const imageForm = document.querySelector("#imageForm");
+imageForm.addEventListener("submit", uploadImage);
 
 getRecipes();
