@@ -35,6 +35,23 @@ function myDateConversion(strDate) {
   return formattedDate;
 }
 
+// function displayFormatArrayData(arrItems, strHeader, isOrderedList = false) {
+function displayFormatArrayData(arrItems, strHeader, isOrderedList = false) {
+  // let strHeader = "MY TEMP HEADER";
+  const strLineItems = arrItems.map((item, index) => {
+    // return `${index + 1}: ${item}`;
+    return `<li>${item}</li>`;
+  });
+
+  let myTag = "ul";
+  if (isOrderedList) {
+    myTag = "ol";
+  }
+
+  return `<h4>${strHeader}</h4>
+  <${myTag}>${strLineItems.join("")}</${myTag}>`;
+}
+
 function getRecipes() {
   document.querySelector(".recipes").innerHTML = ``;
   fetch(`api/recipes`)
@@ -54,13 +71,24 @@ function renderRecipes(recipes) {
 
     let recipeEl = document.createElement("div");
     recipeEl.innerHTML = `
-      <img src="img/${recipe.image}" />
+      
       <h3><a href="detail.html?recipe=${recipe._id}">${recipe.title}</a></h3>
-      <p>${convDate}</p>
-      <p>${recipe.description}</p>
       <p>${recipe._id}</p>
+      <p>${convDate}</p>
+      <img src="img/${recipe.image}" />
+      <p>${recipe.description}</p>
+      <p>${displayFormatArrayData(recipe.ingredients, "Ingredients")}</p>
+      <p>${displayFormatArrayData(recipe.preparation, "Preparation")}</p>
+      
       <a class="delete" data-id=${recipe._id} href="#">Delete</a>
     `;
+    {
+      /* <p>${displayFormatArrayData(recipe.ingredients, "Ingredients")}</p> */
+    }
+    {
+      /* <p>${displayFormatArrayData(recipe.preperation, "Preperation", true)}</p> */
+    }
+
     document.querySelector(".recipes").append(recipeEl);
   });
 }

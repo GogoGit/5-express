@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// You were wondering how the schema got updated!  Well this is it
+// You were wondering how the schema got updated!  Well this is it + Default Data Imported (recipe.controllers.js)
+//
 // Starting Schema
 // const RecipeSchema = new Schema({
 //   title: String,
@@ -9,7 +10,7 @@ const Schema = mongoose.Schema;
 //   image: String,
 // });
 
-// Updated Schema
+// Updated Schema + Default Data Imported has been udpated!  (recipe.controllers.js)
 const RecipeSchema = new Schema({
   title: String,
   created: {

@@ -12,7 +12,8 @@ function showDetail() {
 
 function renderRecipe(recipe) {
   //Destructuring the data we want to use
-  const { image, title, description } = recipe;
+  // const { image, title, description } = recipe;
+  const { image, title, description, ingredients, preparation } = recipe;
 
   let recipeEl = document.createElement("div");
   recipeEl.innerHTML = `
