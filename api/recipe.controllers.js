@@ -1,3 +1,4 @@
+//https://mongoosejs.com/docs/api/query.html
 const Recipe = require("./recipe.model");
 
 // end points
@@ -29,13 +30,15 @@ exports.update = function (req, res) {
 };
 
 exports.delete = function (req, res) {
+  console.log("LOOK HERE!!!!!!!!!!!!!!!!!!!");
+  console.log("req: ", req);
+  // console.log("res: ", res);
   let id = req.params.id;
+  Recipe.deleteOne({ _id: id }).then(res.sendStatus(202));
   // Recipe.deleteOne({ _id: id }).then(res.sendStatus(202));
   //Recipe.deleteOne({ _id: id }).then(res.send(`${id}`));
   // Recipe.deleteOne({ _id: id }).then(res.send(`ID124314341234lkj   ${id}`));
-  Recipe.deleteOne({ _id: id }).then((id) =>
-    res.send(`ID124314341234lkj   ${id}`)
-  );
+  // Recipe.deleteOne({ _id: id }).then((id) =>  res.send(`ID124314341234lkj   ${id}`)  );
 };
 
 exports.upload = function (req, res) {

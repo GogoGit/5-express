@@ -163,6 +163,37 @@ function handleClicks(event) {
   } //else if (event.target.matches("#seed")) {
   //   seed();
   // }
+
+  if (event.target.id.match("add-data-button")) {
+    console.dir(event.target);
+    console.log("add more data!!!");
+    fetch(`api/import`)
+      .then((response) => {
+        console.log(response);
+      })
+      .then((data) => {
+        console.log(data);
+      });
+
+    //Refresh Page
+    console.log("Refresh Page");
+    getRecipes();
+  }
+  if (event.target.id.match("delete-data-button")) {
+    console.dir(event.target);
+    console.log("BURN IT TO THE GROUND!!!");
+    fetch(`api/KillAll`)
+      .then((response) => {
+        console.log(response);
+      })
+      .then((data) => {
+        console.log(data);
+      });
+
+    //Refresh Page
+    console.log("Refresh Page");
+    getRecipes();
+  }
 }
 
 document.addEventListener("click", handleClicks);
@@ -188,8 +219,8 @@ function addDataApiCall(event) {
   getRecipes();
 }
 
-const btnAddData = document.getElementById("add-data-button");
-btnAddData.addEventListener("click", addDataApiCall);
+// const btnAddData = document.getElementById("add-data-button");
+// btnAddData.addEventListener("click", addDataApiCall);
 
 //Delete All Data Button
 function deleteDataApiCall(event) {
@@ -208,7 +239,7 @@ function deleteDataApiCall(event) {
   getRecipes();
 }
 
-const btnDeleteData = document.getElementById("delete-data-button");
-btnDeleteData.addEventListener("click", deleteDataApiCall);
+// const btnDeleteData = document.getElementById("delete-data-button");
+// btnDeleteData.addEventListener("click", deleteDataApiCall);
 
 getRecipes();
