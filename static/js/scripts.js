@@ -179,13 +179,19 @@ function renderRecipes(recipes) {
 function addRecipe(event) {
   event.preventDefault();
   //Destructuring the data we want to use
-  const { title, image, description, createDate } = event.target;
+  const { title, image, description, ingredients, createDate } = event.target;
+
+  objIngredients = [];
+  arrIngredients = ingredients.value.split(",");
+  arrIngredients.map((item, index) => {
+    objIngredients[index] = `${item}`;
+  });
 
   const recipe = {
     title: title.value,
     image: image.value,
     description: description.value,
-    // created: "2024-03-20T17:20:16",
+    ingredients: objIngredients,
     created: createDate.value.toString(),
   };
 
