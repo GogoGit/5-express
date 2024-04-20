@@ -78,6 +78,7 @@ function displayFormatedListData(items, strHeader, isOrderedList = false) {
 }
 
 function getRecipes() {
+  updateUploadStatus("");
   document.querySelector(".recipes").innerHTML = ``;
   fetch(`api/recipes`)
     .then((response) => response.json())
@@ -246,6 +247,16 @@ document.addEventListener("click", handleClicks);
 const addForm = document.querySelector("#addForm");
 addForm.addEventListener("submit", addRecipe);
 
+function updateUploadStatus(status) {
+  const elem = document.querySelectorAll("span#uploadStatus");
+
+  if (status.length == 0) {
+    elem[0].innerText = ``;
+  } else {
+    elem[0].innerText = `Status: ${status}`;
+  }
+}
+
 function uploadImage(event) {
   event.preventDefault();
   const data = new FormData(); //This is how we get the data out of the form ... (How does this work????)
@@ -254,6 +265,11 @@ function uploadImage(event) {
   fetch("/api/upload", {
     method: "POST",
     body: data,
+  }).then((res) => {
+    // document.getElementById("uploadStatus")  //not sure why this didn't work earlier but the one below did????
+    updateUploadStatus(res.statusText);
+    // elem = document.querySelectorAll("span#uploadStatus");
+    // elem[0].innerText = `Status: ${res.statusText}`;
   });
 }
 
