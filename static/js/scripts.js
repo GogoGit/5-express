@@ -1,8 +1,17 @@
-function myDateConversion(strDate) {
-  // Parse the ISO timestamp
-  const isoTimestamp = "2024-04-19T20:30:41.936Z";
-  const dateObject = new Date(isoTimestamp);
+function myDateConversion(strDate, isMilitaryTime = false) {
+  //Error:  please enter a valid value the two nearest valid value is?
+  //https://aaronsaray.com/2015/error-validating-seconds-in-html5-time-input/
+  /*“Please enter a valid value. The two nearest valid values are…” - that didn’t make any sense to me.
+      Well, turns out that every number field in html5 spec is using step=1 on the input fields - however, 
+      time is using step=60 - as in 60 seconds. (I guess the authors preferred minutes over seconds). The 
+      spec clearly defines this - but I guess I just missed that part.
 
+    Hopefully it saves you some time too - in the end, this is what I changed my input field to - and it worked!
+
+    <input step="1" type="time" name="the-time"> 
+  */
+
+  const dateObject = new Date(strDate);
   // Extract the components
   const monthNames = [
     "January",
@@ -18,21 +27,38 @@ function myDateConversion(strDate) {
     "November",
     "December",
   ];
+
+  let hours = 0;
+  let am_pm = "";
+
+  if (isMilitaryTime) {
+    hours = dateObject.getHours();
+    am_pm = "";
+  } else {
+    hours = dateObject.getHours() % 12;
+    am_pm = `${dateObject.getHours() >= 12 ? "pm" : "am"}`;
+  }
+
   const month = monthNames[dateObject.getUTCMonth()];
-  const day = dateObject.getUTCDate();
-  const year = dateObject.getUTCFullYear();
-  const hours = dateObject.getUTCHours();
-  const minutes = dateObject.getUTCMinutes();
-  const seconds = dateObject.getUTCSeconds();
+  const day = dateObject.getDate();
+  const year = dateObject.getFullYear();
+  const minutes = dateObject.getMinutes();
+  const seconds = dateObject.getSeconds();
 
   // Create a formatted date string
-  const formattedDate = `${month} ${day}, ${year} ${hours % 12}:${minutes
+  // const formattedDate = `${month} ${day}, ${year} ${hours % 12}:${minutes
+  //   .toString()
+  //   .padStart(2, "0")}:${seconds.toString().padStart(2, "0")} ${hours >= 12 ? "pm" : "am"}`;
+  const formattedDate = `${year}-${dateObject
+    .getUTCMonth()
     .toString()
-    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")} ${
-    hours >= 12 ? "pm" : "am"
-  }`;
+    .padStart(2, "0")}-${day.toString().padStart(2, "0")}T${hours
+    .toString()
+    .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds
+    .toString()
+    .padStart(2, "0")} ${am_pm}`;
 
-  return formattedDate;
+  return formattedDate.trim();
 }
 
 function displayFormatedListData(items, strHeader, isOrderedList = false) {
@@ -77,8 +103,14 @@ function displayFormatedListData(items, strHeader, isOrderedList = false) {
   <${myTag}>${strLineItems}</${myTag}>`;
 }
 
+function displayUpdateCreateDate() {
+  const elem = document.getElementById("createDate");
+  elem.value = myDateConversion(Date(), true);
+}
+
 function getRecipes() {
   updateUploadStatus("");
+  displayUpdateCreateDate();
   document.querySelector(".recipes").innerHTML = ``;
   fetch(`api/recipes`)
     .then((response) => response.json())
@@ -92,7 +124,10 @@ function getRecipes() {
 function renderRecipes(recipes) {
   console.log(recipes);
   recipes.forEach((recipe) => {
-    let convDate = myDateConversion(recipe.created);
+    let convDate = myDateConversion(recipe.created).replace("T", " ");
+
+    displayUpdateCreateDate;
+
     // <p>${recipe.created}</p>
 
     let recipeEl = document.createElement("div");
@@ -117,15 +152,41 @@ function renderRecipes(recipes) {
   });
 }
 
+//This code worked before DateTime Picker
+// function addRecipe(event) {
+//   event.preventDefault();
+//   //Destructuring the data we want to use
+//   const { title, image, description } = event.target;
+
+//   const recipe = {
+//     title: title.value,
+//     image: image.value,
+//     description: description.value,
+//   };
+
+//   fetch("api/recipes", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(recipe),
+//   })
+//     .then((response) => response.json())
+//     .then(getRecipes);
+// }
+
+//Modified to work with DateTime Picker
 function addRecipe(event) {
   event.preventDefault();
   //Destructuring the data we want to use
-  const { title, image, description } = event.target;
+  const { title, image, description, createDate } = event.target;
 
   const recipe = {
     title: title.value,
     image: image.value,
     description: description.value,
+    // created: "2024-03-20T17:20:16",
+    created: createDate.value.toString(),
   };
 
   fetch("api/recipes", {
