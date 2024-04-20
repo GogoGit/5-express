@@ -14,7 +14,14 @@ function renderRecipe(recipe) {
   //Destructuring the data we want to use
   // const { image, title, description } = recipe;
   const { image, title, description, ingredients, preparation } = recipe;
+  console.log(ingredients);
 
+  let strIngredients = "";
+  strIngredients += ingredients.map((item) => {
+    return `${item}`;
+  });
+
+  console.log(strIngredients);
   let recipeEl = document.createElement("div");
   recipeEl.innerHTML = `
       <img src="img/${recipe.image}" />
@@ -26,6 +33,7 @@ function renderRecipe(recipe) {
   editForm.title.value = title;
   editForm.image.value = image;
   editForm.description.value = description;
+  editForm.ingredients.value = strIngredients;
 
   document.querySelector(".recipe").append(recipeEl);
 }
@@ -34,13 +42,24 @@ const updateRecipe = (event) => {
   event.preventDefault();
   const urlParams = new URLSearchParams(window.location.search);
   const recipeId = urlParams.get("recipe");
-  const { title, image, description } = event.target;
+  const { title, image, description, ingredients } = event.target;
+
+  objIngredients = [];
+  arrIngredients = ingredients.value.split(",");
+  arrIngredients.map((item, index) => {
+    objIngredients[index] = `${item}`;
+  });
+
   const updatedRecipe = {
     _id: recipeId,
     title: title.value,
     image: image.value,
     description: description.value,
+    ingredients: objIngredients,
   };
+
+  console.log(updatedRecipe.ingredients);
+
   fetch(`api/recipes/${recipeId}`, {
     method: "PUT",
     body: JSON.stringify(updatedRecipe),
