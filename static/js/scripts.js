@@ -35,21 +35,46 @@ function myDateConversion(strDate) {
   return formattedDate;
 }
 
-// function displayFormatArrayData(arrItems, strHeader, isOrderedList = false) {
-function displayFormatArrayData(arrItems, strHeader, isOrderedList = false) {
-  // let strHeader = "MY TEMP HEADER";
-  const strLineItems = arrItems.map((item, index) => {
-    // return `${index + 1}: ${item}`;
-    return `<li>${item}</li>`;
-  });
+function displayFormatedListData(items, strHeader, isOrderedList = false) {
+  //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of
 
+  //Tried using typeof to differentiate arrays from objects which didn't work
+  strLineItems = "";
+  switch (strHeader.toLocaleLowerCase()) {
+    case "ingredients":
+      strLineItems = items.map((item, index) => {
+        // return `${index + 1}: ${item}`;
+        return `<li>${item}</li>`;
+      });
+
+      //remove ','
+      strLineItems = strLineItems.join("");
+      break;
+
+    case "preparation":
+      for (index in items) {
+        for (key in items[index]) {
+          // console.log(items[index].key);  //Not sure why this doesn't work ????
+          console.log(items[index][key]);
+          strLineItems += `<li>${items[index][key]}</li>\n`;
+        }
+      }
+      break;
+
+    default:
+      console.warn(
+        `Unknown Header '${strHeader}' used in function displayFormatedListData`
+      );
+  }
+
+  //Determine what type of list
   let myTag = "ul";
   if (isOrderedList) {
     myTag = "ol";
   }
 
   return `<h4>${strHeader}</h4>
-  <${myTag}>${strLineItems.join("")}</${myTag}>`;
+  <${myTag}>${strLineItems}</${myTag}>`;
 }
 
 function getRecipes() {
@@ -77,17 +102,15 @@ function renderRecipes(recipes) {
       <p>${convDate}</p>
       <img src="img/${recipe.image}" />
       <p>${recipe.description}</p>
-      <p>${displayFormatArrayData(recipe.ingredients, "Ingredients")}</p>
-      <p>${displayFormatArrayData(recipe.preparation, "Preparation")}</p>
+      <p>${displayFormatedListData(recipe.ingredients, "Ingredients")}</p>
+      <p>${displayFormatedListData(
+        recipe.preparation,
+        "Preparation",
+        true
+      )}</p>      
       
       <a class="delete" data-id=${recipe._id} href="#">Delete</a>
     `;
-    {
-      /* <p>${displayFormatArrayData(recipe.ingredients, "Ingredients")}</p> */
-    }
-    {
-      /* <p>${displayFormatArrayData(recipe.preperation, "Preperation", true)}</p> */
-    }
 
     document.querySelector(".recipes").append(recipeEl);
   });
