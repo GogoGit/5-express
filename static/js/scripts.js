@@ -1,3 +1,40 @@
+function myDateConversion(strDate) {
+  // Parse the ISO timestamp
+  const isoTimestamp = "2024-04-19T20:30:41.936Z";
+  const dateObject = new Date(isoTimestamp);
+
+  // Extract the components
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const month = monthNames[dateObject.getUTCMonth()];
+  const day = dateObject.getUTCDate();
+  const year = dateObject.getUTCFullYear();
+  const hours = dateObject.getUTCHours();
+  const minutes = dateObject.getUTCMinutes();
+  const seconds = dateObject.getUTCSeconds();
+
+  // Create a formatted date string
+  const formattedDate = `${month} ${day}, ${year} ${hours % 12}:${minutes
+    .toString()
+    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")} ${
+    hours >= 12 ? "pm" : "am"
+  }`;
+
+  return formattedDate;
+}
+
 function getRecipes() {
   document.querySelector(".recipes").innerHTML = ``;
   fetch(`api/recipes`)
@@ -12,10 +49,14 @@ function getRecipes() {
 function renderRecipes(recipes) {
   console.log(recipes);
   recipes.forEach((recipe) => {
+    let convDate = myDateConversion(recipe.created);
+    // <p>${recipe.created}</p>
+
     let recipeEl = document.createElement("div");
     recipeEl.innerHTML = `
       <img src="img/${recipe.image}" />
       <h3><a href="detail.html?recipe=${recipe._id}">${recipe.title}</a></h3>
+      <p>${convDate}</p>
       <p>${recipe.description}</p>
       <p>${recipe._id}</p>
       <a class="delete" data-id=${recipe._id} href="#">Delete</a>

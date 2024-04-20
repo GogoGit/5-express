@@ -15,29 +15,9 @@ exports.findById = (req, res) => {
 //sending data from the front end to the back end
 //Note we should send the data back to the form but here we are just sending OK STATUS!
 exports.add = function (req, res) {
+  // Recipe.create(req.body).then(res.sendStatus(202));
   // Recipe.create(req.body).then(data);
   Recipe.create(req.body).then((data) => res.send(data));
-};
-
-exports.upload = function (req, res) {
-  //Since we cannot determine the file length, we are querying the Key's of the object
-  // to determine if anything exists.
-  console.log("1: ", req.files);
-  console.log("2: ", Object.keys(req.files));
-  if (Object.keys(req.files).length == 0) {
-    // not we are chaining 2 things here
-    // we are sending a Status and then we are saying 'No files were uploaded'
-    // you could add JSON data also....  Need more information/examples
-    return res.status(400).send("No files were uploaded.");
-  }
-  let file = req.files.file;
-  file.mv(`./static/img/${req.body.filename}`, (err) => {
-    if (err) {
-      return res.status(500).send(err);
-    }
-    res.json({ file: `static/img/${req.body.filename}` });
-    console.log(res.json);
-  });
 };
 
 exports.update = function (req, res) {
@@ -56,6 +36,28 @@ exports.delete = function (req, res) {
   Recipe.deleteOne({ _id: id }).then((id) =>
     res.send(`ID124314341234lkj   ${id}`)
   );
+};
+
+exports.upload = function (req, res) {
+  //Since we cannot determine the file length, we are querying the Key's of the object
+  // to determine if anything exists.
+  console.log(res);
+  console.log("1: ", req.files);
+  console.log("2: ", Object.keys(req.files));
+  if (Object.keys(req.files).length == 0) {
+    // not we are chaining 2 things here
+    // we are sending a Status and then we are saying 'No files were uploaded'
+    // you could add JSON data also....  Need more information/examples
+    return res.status(400).send("No files were uploaded.");
+  }
+  let file = req.files.file;
+  file.mv(`./static/img/${req.body.filename}`, (err) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    res.json({ file: `static/img/${req.body.filename}` });
+    console.log(res.json);
+  });
 };
 
 // Example to delete just one Item
@@ -98,10 +100,6 @@ exports.import = function (req, res) {
       image: "hamburger.png",
     },
   ]).then(res.sendStatus(202));
-};
-
-exports.killall = function (req, res) {
-  Recipe.deleteMany({}).then(res.sendStatus(202));
 };
 
 //Creating some data
